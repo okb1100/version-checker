@@ -11,7 +11,11 @@ app.get('/:packageName', (req,res) => {
 	request({url: playUrl + req.params.packageName, headers: {'User-Agent': userAgent}}, (e, r, body) => {
 		const $ = cheerio.load(body)
 		const version = $('.htlgb').eq(6).children().first().text()
-		res.send(version === 'Varies with device' ? '0.0.0' : version)
+		const responseObject = {
+			bundleId: req.params.packageName,
+			version: version === 'Varies with device' ? '0.0.0' : version
+		}
+		res.send(responseObject)
 	})
 });
 
